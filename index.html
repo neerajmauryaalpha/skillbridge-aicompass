@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkillBridge – AICompass</title>
-  </head>
-  <body>
-    <div id="root"></div>
+<head>
+  <meta charset="UTF-8">
+  <title>SkillBridge: AICompass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- REQUIRED FOR REACT TO LOAD -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>SkillBridge: AICompass</h1>
+  <p>Conversational AI Literacy Guide</p>
+</header>
+
+<main>
+
+  <!-- Chat Area -->
+  <div id="chat-box"></div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Ask about AI, ethics, bias, risks, or type 'quiz'" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <!-- Quiz Section -->
+  <section id="quiz-section" style="display:none;">
+    <h3>AI Literacy Quiz</h3>
+    <p id="quiz-question"></p>
+    <div id="quiz-options"></div>
+    <p id="quiz-feedback"></p>
+  </section>
+
+</main>
+
+<footer>
+  <p>Educational Prototype | Responsible AI Learning</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
 </html>
