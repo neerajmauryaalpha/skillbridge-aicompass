@@ -31,7 +31,7 @@ main {
   background: #e0e7ff;
   padding: 8px;
   border-radius: 6px;
-  margin: 5px 0;
+  margin-bottom: 5px;
 }
 
 .user {
@@ -39,13 +39,13 @@ main {
   color: white;
   padding: 8px;
   border-radius: 6px;
-  margin: 5px 0;
+  margin-bottom: 5px;
   text-align: right;
 }
 
 .input-area {
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
 
 input {
