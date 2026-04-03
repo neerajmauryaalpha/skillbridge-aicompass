@@ -1,39 +1,46 @@
 const chatBox = document.getElementById("chat-box");
 
-/* ---------------- CHATBOT LOGIC ---------------- */
+/* ========================
+   CHATBOT FUNCTIONALITY
+======================== */
 
 function sendMessage() {
   const input = document.getElementById("userInput");
-  const text = input.value.trim();
-  if (!text) return;
+  const message = input.value.trim();
+  if (!message) return;
 
-  addMessage(text, "user");
+  addMessage(message, "user");
   input.value = "";
 
   let reply = "";
-  const msg = text.toLowerCase();
+  const text = message.toLowerCase();
 
-  if (msg.includes("quiz")) {
+  if (text.includes("quiz")) {
     startQuiz();
-    reply = "Great 👍 Let’s test your AI knowledge with a short quiz!";
-  } 
-  else if (msg.includes("ethics")) {
-    reply = ethicsScenario();
+    reply = "✅ Starting AI Literacy Quiz. Answer the questions below!";
   }
-  else if (msg.includes("bias")) {
-    reply = "AI bias occurs when training data reflects unfair social patterns. This can lead to discrimination in hiring, loans, or healthcare decisions.";
+  else if (text.includes("ethics")) {
+    reply = getEthicsScenario();
   }
-  else if (msg.includes("risk")) {
-    reply = "AI risks include misinformation, biased outputs, privacy violations, and over‑reliance on automated decisions.";
+  else if (text.includes("bias")) {
+    reply =
+      "AI bias occurs when training data reflects unfair patterns, leading to discrimination in areas like hiring or lending.";
   }
-  else if (msg.includes("regulation")) {
-    reply = "AI regulations aim to ensure transparency, accountability, safety, and human oversight over high‑risk AI systems.";
+  else if (text.includes("risk")) {
+    reply =
+      "AI risks include misinformation, biased decisions, lack of transparency, and over‑reliance on automation.";
   }
-  else if (msg.includes("ai")) {
-    reply = "Artificial Intelligence (AI) refers to systems that learn from data to make predictions or decisions, often mimicking human intelligence.";
+  else if (text.includes("regulation")) {
+    reply =
+      "AI regulations aim to ensure safe, transparent, and responsible use of AI systems, especially in high‑risk domains.";
+  }
+  else if (text.includes("ai")) {
+    reply =
+      "Artificial Intelligence (AI) refers to computer systems that learn from data to make predictions or decisions.";
   }
   else {
-    reply = "That’s an interesting question. Would you like to learn about AI ethics, risks, or try a quiz?";
+    reply =
+      "That’s an interesting question. You can ask about AI, ethics, bias, risks, regulations, or type 'quiz'.";
   }
 
   setTimeout(() => addMessage(reply, "bot"), 500);
@@ -47,36 +54,40 @@ function addMessage(text, sender) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-/* ---------------- ETHICS SCENARIOS ---------------- */
+/* ========================
+   AI ETHICS SCENARIOS
+======================== */
 
-function ethicsScenario() {
+function getEthicsScenario() {
   const scenarios = [
-    "📌 Scenario: An AI hiring system rejects most female candidates because it was trained on biased historical data.\n✅ Ethical Issue: Bias and fairness. AI systems must be audited and trained on diverse data.",
+    "📌 Scenario: An AI hiring tool rejects women applicants due to biased historical data.\n✅ Ethical Issue: Bias and fairness. Data audits and diverse datasets are required.",
 
-    "📌 Scenario: Facial recognition cameras are deployed in public spaces without user consent.\n✅ Ethical Issue: Privacy and transparency. Users should be informed and protected.",
+    "📌 Scenario: Facial recognition cameras are used without public consent.\n✅ Ethical Issue: Privacy and transparency must be respected.",
 
-    "📌 Scenario: A chatbot provides medical advice without human supervision.\n✅ Ethical Issue: Accountability and human oversight are critical in high‑risk domains."
+    "📌 Scenario: A chatbot gives medical advice without supervision.\n✅ Ethical Issue: Accountability and human oversight are critical in high‑risk systems."
   ];
 
   return scenarios[Math.floor(Math.random() * scenarios.length)];
 }
 
-/* ---------------- QUIZ MODULE ---------------- */
+/* ========================
+   QUIZ MODULE
+======================== */
 
 const quizData = [
   {
-    q: "What does AI mainly learn from?",
+    question: "What does most AI systems learn from?",
     options: ["Data", "Emotions", "Luck"],
     answer: "Data"
   },
   {
-    q: "What is a major risk of AI bias?",
-    options: ["Faster systems", "Unfair decisions", "Lower costs"],
+    question: "What is a major risk of biased AI?",
+    options: ["Faster processing", "Unfair decisions", "Lower cost"],
     answer: "Unfair decisions"
   },
   {
-    q: "Who is responsible for AI decisions?",
-    options: ["AI itself", "Humans and organizations", "No one"],
+    question: "Who is responsible for AI decisions?",
+    options: ["The AI", "Humans and organizations", "No one"],
     answer: "Humans and organizations"
   }
 ];
@@ -91,32 +102,34 @@ function startQuiz() {
 
 function loadQuestion() {
   if (quizIndex >= quizData.length) {
-    document.getElementById("quiz-question").innerText = "✅ Quiz completed! Great job.";
+    document.getElementById("quiz-question").innerText =
+      "✅ Quiz completed! Well done.";
     document.getElementById("quiz-options").innerHTML = "";
     return;
   }
 
   const q = quizData[quizIndex];
-  document.getElementById("quiz-question").innerText = q.q;
+  document.getElementById("quiz-question").innerText = q.question;
 
   const optionsDiv = document.getElementById("quiz-options");
   optionsDiv.innerHTML = "";
 
-  q.options.forEach(opt => {
+  q.options.forEach(option => {
     const btn = document.createElement("button");
-    btn.innerText = opt;
-    btn.onclick = () => checkAnswer(opt);
+    btn.innerText = option;
+    btn.onclick = () => checkAnswer(option);
     optionsDiv.appendChild(btn);
   });
 }
 
-function checkAnswer(option) {
+function checkAnswer(selected) {
   const feedback = document.getElementById("quiz-feedback");
 
-  if (option === quizData[quizIndex].answer) {
+  if (selected === quizData[quizIndex].answer) {
     feedback.innerText = "✅ Correct!";
   } else {
-    feedback.innerText = "❌ Incorrect. Correct answer: " + quizData[quizIndex].answer;
+    feedback.innerText =
+      "❌ Incorrect. Correct answer: " + quizData[quizIndex].answer;
   }
 
   quizIndex++;
