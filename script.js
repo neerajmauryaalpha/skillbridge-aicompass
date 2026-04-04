@@ -1,49 +1,32 @@
 const chatBox = document.getElementById("chat-box");
+const toggleBtn = document.getElementById("themeToggle");
 
-/* ========================
-   CHATBOT FUNCTIONALITY
-======================== */
+/* ---------- Dark Mode ---------- */
+if (localStorage.theme === "dark") {
+  document.body.classList.add("dark");
+}
 
+toggleBtn.onclick = () => {
+  document.body.classList.toggle("dark");
+  localStorage.theme =
+    document.body.classList.contains("dark") ? "dark" : "light";
+};
+
+/* ---------- Chat ---------- */
 function sendMessage() {
   const input = document.getElementById("userInput");
-  const message = input.value.trim();
-  if (!message) return;
+  const text = input.value.trim();
+  if (!text) return;
 
-  addMessage(message, "user");
+  addMessage(text, "user");
   input.value = "";
 
-  let reply = "";
-  const text = message.toLowerCase();
+  respond(text.toLowerCase());
+}
 
-  if (text.includes("quiz")) {
-    startQuiz();
-    reply = "✅ Starting AI Literacy Quiz. Answer the questions below!";
-  }
-  else if (text.includes("ethics")) {
-    reply = getEthicsScenario();
-  }
-  else if (text.includes("bias")) {
-    reply =
-      "AI bias occurs when training data reflects unfair patterns, leading to discrimination in areas like hiring or lending.";
-  }
-  else if (text.includes("risk")) {
-    reply =
-      "AI risks include misinformation, biased decisions, lack of transparency, and over‑reliance on automation.";
-  }
-  else if (text.includes("regulation")) {
-    reply =
-      "AI regulations aim to ensure safe, transparent, and responsible use of AI systems, especially in high‑risk domains.";
-  }
-  else if (text.includes("ai")) {
-    reply =
-      "Artificial Intelligence (AI) refers to computer systems that learn from data to make predictions or decisions.";
-  }
-  else {
-    reply =
-      "That’s an interesting question. You can ask about AI, ethics, bias, risks, regulations, or type 'quiz'.";
-  }
-
-  setTimeout(() => addMessage(reply, "bot"), 500);
+function useSuggestion(text) {
+  document.getElementById("userInput").value = text;
+  sendMessage();
 }
 
 function addMessage(text, sender) {
@@ -54,87 +37,60 @@ function addMessage(text, sender) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-/* ========================
-   AI ETHICS SCENARIOS
-======================== */
+function respond(text) {
+  let reply =
+    "You can ask about AI, ethics, bias, risks, or try the quiz.";
 
-function getEthicsScenario() {
-  const scenarios = [
-    "📌 Scenario: An AI hiring tool rejects women applicants due to biased historical data.\n✅ Ethical Issue: Bias and fairness. Data audits and diverse datasets are required.",
+  if (text.includes("ai")) reply =
+    "AI systems learn from data to make predictions and decisions.";
+  if (text.includes("bias")) reply =
+    "AI bias arises from biased data leading to unfair outcomes.";
+  if (text.includes("ethics")) reply =
+    "Ethical AI focuses on fairness, accountability, transparency, and human oversight.";
+  if (text.includes("risk")) reply =
+    "AI risks include misinformation, surveillance misuse, and over‑automation.";
+  if (text.includes("quiz")) {
+    startQuiz();
+    reply = "Let’s begin the AI literacy quiz!";
+  }
 
-    "📌 Scenario: Facial recognition cameras are used without public consent.\n✅ Ethical Issue: Privacy and transparency must be respected.",
-
-    "📌 Scenario: A chatbot gives medical advice without supervision.\n✅ Ethical Issue: Accountability and human oversight are critical in high‑risk systems."
-  ];
-
-  return scenarios[Math.floor(Math.random() * scenarios.length)];
+  setTimeout(() => addMessage(reply, "bot"), 500);
 }
 
-/* ========================
-   QUIZ MODULE
-======================== */
-
+/* ---------- Quiz ---------- */
 const quizData = [
-  {
-    question: "What does most AI systems learn from?",
-    options: ["Data", "Emotions", "Luck"],
-    answer: "Data"
-  },
-  {
-    question: "What is a major risk of biased AI?",
-    options: ["Faster processing", "Unfair decisions", "Lower cost"],
-    answer: "Unfair decisions"
-  },
-  {
-    question: "Who is responsible for AI decisions?",
-    options: ["The AI", "Humans and organizations", "No one"],
-    answer: "Humans and organizations"
-  }
+  { q: "What does AI learn from?", o: ["Data","Luck","Emotions"], a: "Data" },
+  { q: "Key AI ethical issue?", o: ["Bias","Speed","Cost"], a: "Bias" },
+  { q: "Who is accountable for AI?", o: ["AI","Humans","No one"], a: "Humans" }
 ];
 
-let quizIndex = 0;
+let qi = 0;
 
 function startQuiz() {
-  document.getElementById("quiz-section").style.display = "block";
-  quizIndex = 0;
-  loadQuestion();
+  qi = 0;
+  loadQuiz();
 }
 
-function loadQuestion() {
-  if (quizIndex >= quizData.length) {
+function loadQuiz() {
+  if (qi >= quizData.length) {
     document.getElementById("quiz-question").innerText =
-      "✅ Quiz completed! Well done.";
+      "✅ Quiz Complete!";
     document.getElementById("quiz-options").innerHTML = "";
     return;
   }
 
-  const q = quizData[quizIndex];
-  document.getElementById("quiz-question").innerText = q.question;
+  const q = quizData[qi];
+  document.getElementById("quiz-question").innerText = q.q;
+  const box = document.getElementById("quiz-options");
+  box.innerHTML = "";
 
-  const optionsDiv = document.getElementById("quiz-options");
-  optionsDiv.innerHTML = "";
-
-  q.options.forEach(option => {
-    const btn = document.createElement("button");
-    btn.innerText = option;
-    btn.onclick = () => checkAnswer(option);
-    optionsDiv.appendChild(btn);
+  q.o.forEach(opt => {
+    const b = document.createElement("button");
+    b.innerText = opt;
+    b.onclick = () => {
+      qi++;
+      loadQuiz();
+    };
+    box.appendChild(b);
   });
-}
-
-function checkAnswer(selected) {
-  const feedback = document.getElementById("quiz-feedback");
-
-  if (selected === quizData[quizIndex].answer) {
-    feedback.innerText = "✅ Correct!";
-  } else {
-    feedback.innerText =
-      "❌ Incorrect. Correct answer: " + quizData[quizIndex].answer;
-  }
-
-  quizIndex++;
-  setTimeout(() => {
-    feedback.innerText = "";
-    loadQuestion();
-  }, 1000);
 }
