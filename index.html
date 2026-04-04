@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SkillBridge: AICompass</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>SkillBridge – AICompass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Conversational AI Literacy Guide">
 
-  <!-- ✅ Correct CSS linking -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h1>SkillBridge: AICompass</h1>
+<!-- Header -->
+<header class="hero">
+  <h1>SkillBridge – AICompass</h1>
   <p>Conversational AI Literacy Guide</p>
+
+  <!-- Dark Mode Toggle -->
+  <button id="themeToggle" aria-label="Toggle dark mode">
+    🌙 Dark Mode
+  </button>
 </header>
 
 <main>
 
-  <!-- Chat Area -->
-  <div id="chat-box"></div>
+  <!-- Flowchart -->
+  <section class="flowchart">
+    <h2>How AICompass Works</h2>
+    <svg viewBox="0 0 800 200" aria-hidden="true">
+      <rect x="20" y="70" width="200" height="60" />
+      <text x="45" y="105">User Question</text>
 
-  <!-- Input Area -->
-  <div class="input-area">
-    <input
-      type="text"
-      id="userInput"
-      placeholder="Ask about AI, ethics, bias, risks, or type 'quiz'"
-    />
-    <button onclick="sendMessage()">Send</button>
-  </div>
+      <line x1="220" y1="100" x2="320" y2="100" />
 
-  <!-- Quiz Section -->
-  <section id="quiz-section" style="display:none;">
-    <h3>AI Literacy Quiz</h3>
+      <rect x="320" y="70" width="200" height="60" />
+      <text x="345" y="105">Chatbot Logic</text>
+
+      <line x1="520" y1="100" x2="620" y2="100" />
+
+      <rect x="620" y="70" width="160" height="60" />
+      <text x="640" y="105">AI Learning</text>
+    </svg>
+  </section>
+
+  <!-- Chat Section -->
+  <section class="chat-container">
+    <h2>Chat with AICompass</h2>
+
+    <!-- Suggested Questions -->
+    <div class="suggestions">
+      <button onclick="useSuggestion('What is AI?')">What is AI?</button>
+      <button onclick="useSuggestion('Explain AI bias')">AI Bias</button>
+      <button onclick="useSuggestion('AI ethics example')">AI Ethics</button>
+      <button onclick="useSuggestion('AI risks')">AI Risks</button>
+      <button onclick="useSuggestion('quiz')">Start Quiz</button>
+    </div>
+
+    <!-- Chat Log -->
+    <div id="chat-box" role="log" aria-live="polite"></div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <label for="userInput" class="visually-hidden">Chat input</label>
+      <input id="userInput" placeholder="Ask about AI, ethics, bias..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </section>
+
+  <!-- Quiz -->
+  <section id="quiz-section" aria-live="polite">
+    <h2>AI Literacy Quiz</h2>
     <p id="quiz-question"></p>
     <div id="quiz-options"></div>
     <p id="quiz-feedback"></p>
@@ -45,8 +81,6 @@
   <p>Educational Prototype | Responsible AI Learning</p>
 </footer>
 
-<!-- ✅ Correct JavaScript linking -->
 <script src="script.js"></script>
-
 </body>
 </html>
